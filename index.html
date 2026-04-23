@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Moussa Allouache — Portfolio BTS SIO SISR</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Sora:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+  <!-- Particules de fond -->
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- NAVIGATION -->
+  <nav id="navbar">
+    <div class="nav-logo">
+      <span class="logo-bracket">&lt;</span>MA<span class="logo-bracket">/&gt;</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#accueil" class="nav-link active" data-section="accueil">Accueil</a></li>
+      <li><a href="#parcours" class="nav-link" data-section="parcours">Parcours</a></li>
+      <li><a href="#veille" class="nav-link" data-section="veille">Veille Tech</a></li>
+      <li><a href="#certifications" class="nav-link" data-section="certifications">Certifications</a></li>
+      <li><a href="#contact" class="nav-link" data-section="contact">Contact</a></li>
+    </ul>
+    <button class="burger" id="burger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- SECTION ACCUEIL -->
+  <section id="accueil" class="section hero-section">
+    <div class="hero-content">
+      <div class="hero-tag">BTS SIO · Option SISR · 1ère année</div>
+      <h1 class="hero-title">
+        <span class="line1">Moussa</span>
+        <span class="line2">Allouache</span>
+      </h1>
+      <p class="hero-subtitle">Futur technicien réseaux & sécurité informatique</p>
+      <div class="hero-badges">
+        <span class="badge"><i class="fas fa-network-wired"></i> Réseaux</span>
+        <span class="badge"><i class="fas fa-shield-halved"></i> Cybersécurité</span>
+        <span class="badge"><i class="fas fa-server"></i> Infrastructure</span>
+      </div>
+      <a href="#parcours" class="cta-btn">Découvrir mon profil <i class="fas fa-arrow-down"></i></a>
+    </div>
+    <div class="hero-visual">
+      <div class="avatar-ring">
+        <div class="avatar-inner">
+          <i class="fas fa-user-shield"></i>
+        </div>
+        <div class="ring ring1"></div>
+        <div class="ring ring2"></div>
+        <div class="ring ring3"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION PARCOURS -->
+  <section id="parcours" class="section">
+    <div class="section-header">
+      <span class="section-number">01</span>
+      <h2 class="section-title">Mon Parcours</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="parcours-grid">
+
+      <div class="card parcours-card" data-delay="0">
+        <div class="card-icon"><i class="fas fa-graduation-cap"></i></div>
+        <div class="card-label">2022 — 2025</div>
+        <h3 class="card-title">Lycée François Mauriac</h3>
+        <p class="card-location"><i class="fas fa-map-marker-alt"></i> Andrézieux-Bouthéon (42)</p>
+        <p class="card-desc">Baccalauréat STI2D — Sciences et Technologies de l'Industrie et du Développement Durable</p>
+        <div class="mention-badge">
+          <i class="fas fa-star"></i> Mention Assez Bien · 2025
+        </div>
+      </div>
+
+      <div class="card parcours-card" data-delay="150">
+        <div class="card-icon active-icon"><i class="fas fa-laptop-code"></i></div>
+        <div class="card-label">2025 — en cours</div>
+        <h3 class="card-title">BTS SIO — Option SISR</h3>
+        <p class="card-location"><i class="fas fa-map-marker-alt"></i> Formation actuelle</p>
+        <p class="card-desc">Solutions d'Infrastructure, Systèmes et Réseaux — Administration, sécurisation et maintenance des systèmes informatiques.</p>
+        <div class="mention-badge active-badge">
+          <i class="fas fa-circle-dot"></i> 1ère année · En cours
+        </div>
+      </div>
+
+      <div class="card competences-card" data-delay="300">
+        <div class="card-icon"><i class="fas fa-code"></i></div>
+        <h3 class="card-title">Compétences techniques</h3>
+        <div class="skills-list">
+          <div class="skill-item">
+            <span class="skill-name">Réseaux TCP/IP</span>
+            <div class="skill-bar"><div class="skill-fill" data-width="75"></div></div>
+          </div>
+          <div class="skill-item">
+            <span class="skill-name">Linux / Windows Server</span>
+            <div class="skill-bar"><div class="skill-fill" data-width="65"></div></div>
+          </div>
+          <div class="skill-item">
+            <span class="skill-name">Cybersécurité</span>
+            <div class="skill-bar"><div class="skill-fill" data-width="60"></div></div>
+          </div>
+          <div class="skill-item">
+            <span class="skill-name">Virtualisation</span>
+            <div class="skill-bar"><div class="skill-fill" data-width="55"></div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION VEILLE TECHNOLOGIQUE -->
+  <section id="veille" class="section">
+    <div class="section-header">
+      <span class="section-number">02</span>
+      <h2 class="section-title">Veille Technologique</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="veille-intro">
+      <p>Thème choisi : <strong>La Cybersécurité des infrastructures réseau</strong> — un enjeu majeur en constante évolution.</p>
+    </div>
+    <div class="veille-grid">
+
+      <div class="veille-card" data-delay="0">
+        <div class="veille-icon"><i class="fas fa-bug"></i></div>
+        <h3>Ransomwares & APT</h3>
+        <p>Les attaques par rançongiciels ciblant les entreprises et collectivités publiques sont en forte augmentation. Les groupes APT (Advanced Persistent Threats) exploitent des failles zero-day pour s'infiltrer durablement dans les systèmes.</p>
+        <div class="veille-tag">Menaces</div>
+      </div>
+
+      <div class="veille-card" data-delay="150">
+        <div class="veille-icon"><i class="fas fa-shield-virus"></i></div>
+        <h3>Zero Trust Architecture</h3>
+        <p>Le modèle "Ne jamais faire confiance, toujours vérifier" s'impose comme la nouvelle norme de sécurité. Il repose sur une authentification continue et une micro-segmentation des accès au réseau.</p>
+        <div class="veille-tag">Tendances</div>
+      </div>
+
+      <div class="veille-card" data-delay="300">
+        <div class="veille-icon"><i class="fas fa-robot"></i></div>
+        <h3>IA & Détection d'intrusion</h3>
+        <p>L'intelligence artificielle révolutionne les SIEM (Security Information and Event Management). Les algorithmes de machine learning permettent de détecter des comportements anormaux en temps réel.</p>
+        <div class="veille-tag">Innovation</div>
+      </div>
+
+      <div class="veille-card" data-delay="450">
+        <div class="veille-icon"><i class="fas fa-cloud-bolt"></i></div>
+        <h3>Sécurité Cloud & SASE</h3>
+        <p>Le SASE (Secure Access Service Edge) converge réseau et sécurité dans le cloud. Face à la migration massive des services cloud, sécuriser les accès distants devient prioritaire pour les administrateurs réseau.</p>
+        <div class="veille-tag">Cloud</div>
+      </div>
+
+    </div>
+
+    <div class="veille-sources">
+      <h4><i class="fas fa-rss"></i> Sources de veille</h4>
+      <div class="sources-list">
+        <span class="source-chip">ANSSI</span>
+        <span class="source-chip">CERT-FR</span>
+        <span class="source-chip">The Hacker News</span>
+        <span class="source-chip">Bleeping Computer</span>
+        <span class="source-chip">CISA</span>
+        <span class="source-chip">Numerama</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION CERTIFICATIONS -->
+  <section id="certifications" class="section">
+    <div class="section-header">
+      <span class="section-number">03</span>
+      <h2 class="section-title">Certifications</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="certif-grid">
+
+      <div class="certif-card" data-delay="0">
+        <div class="certif-glow"></div>
+        <div class="certif-logo anssi-logo">
+          <i class="fas fa-shield-halved"></i>
+          <span>ANSSI</span>
+        </div>
+        <h3 class="certif-title">Attestation ANSSI</h3>
+        <p class="certif-org">Agence Nationale de la Sécurité des Systèmes d'Information</p>
+        <p class="certif-desc">Formation aux bonnes pratiques de la sécurité informatique — sensibilisation aux risques cyber et aux règles d'hygiène numérique.</p>
+        <div class="certif-footer">
+          <span class="certif-status valid"><i class="fas fa-circle-check"></i> Obtenue</span>
+        </div>
+      </div>
+
+      <div class="certif-card" data-delay="200">
+        <div class="certif-glow certif-glow2"></div>
+        <div class="certif-logo secnum-logo">
+          <i class="fas fa-lock"></i>
+          <span>SecNumAcadémie</span>
+        </div>
+        <h3 class="certif-title">SecNumAcadémie</h3>
+        <p class="certif-org">Plateforme de formation ANSSI</p>
+        <p class="certif-desc">MOOC de l'ANSSI couvrant la sécurité des réseaux, la cryptographie, la sécurité des systèmes et la gestion des incidents de sécurité.</p>
+        <div class="certif-footer">
+          <span class="certif-status valid"><i class="fas fa-circle-check"></i> Obtenue</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION CONTACT -->
+  <section id="contact" class="section">
+    <div class="section-header">
+      <span class="section-number">04</span>
+      <h2 class="section-title">Contact</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="contact-wrapper">
+      <div class="contact-info">
+        <p class="contact-intro">N'hésitez pas à me contacter pour toute question, opportunité de stage ou collaboration !</p>
+        <div class="contact-items">
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+            <div class="contact-detail">
+              <span class="contact-label">Email</span>
+              <span class="contact-value">moussaallouache10@gmail.com</span>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fab fa-linkedin"></i></div>
+            <div class="contact-detail">
+              <span class="contact-label">LinkedIn</span>
+              <span class="contact-value">Moussa Allouache</span>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fab fa-github"></i></div>
+            <div class="contact-detail">
+              <span class="contact-label">GitHub</span>
+              <span class="contact-value"><!-- Ton GitHub --></span>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fas fa-phone"></i></div>
+            <div class="contact-detail">
+              <span class="contact-label">Téléphone</span>
+              <span class="contact-value">07 57 63 25 29</span>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+            <div class="contact-detail">
+              <span class="contact-label">Localisation</span>
+              <span class="contact-value">Loire (42), France</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <form class="contact-form" id="contact-form">
+        <div class="form-group">
+          <label for="name">Votre nom</label>
+          <input type="text" id="name" placeholder="John Doe" required />
+        </div>
+        <div class="form-group">
+          <label for="email">Votre email</label>
+          <input type="email" id="email" placeholder="john@exemple.com" required />
+        </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" rows="5" placeholder="Votre message..." required></textarea>
+        </div>
+        <button type="submit" class="submit-btn">
+          Envoyer <i class="fas fa-paper-plane"></i>
+        </button>
+        <div class="form-feedback" id="form-feedback"></div>
+      </form>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 — <span class="footer-name">Moussa Allouache</span> · BTS SIO SISR</p>
+    <p class="footer-sub">Conçu avec passion <i class="fas fa-heart"></i></p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
