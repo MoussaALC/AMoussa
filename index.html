@@ -21,6 +21,7 @@
     <ul class="nav-links">
       <li><a href="#accueil" class="nav-link active" data-section="accueil">Accueil</a></li>
       <li><a href="#parcours" class="nav-link" data-section="parcours">Parcours</a></li>
+      <li><a href="#stage" class="nav-link" data-section="stage">Stage</a></li>
       <li><a href="#veille" class="nav-link" data-section="veille">Veille Tech</a></li>
       <li><a href="#certifications" class="nav-link" data-section="certifications">Certifications</a></li>
       <li><a href="#contact" class="nav-link" data-section="contact">Contact</a></li>
@@ -115,10 +116,71 @@
     </div>
   </section>
 
+  <!-- SECTION STAGE - Campus des Monts du Lyonnais (42) -->
+  <section id="stage" class="section">
+    <div class="section-header">
+      <span class="section-number">02</span>
+      <h2 class="section-title">Mon Stage</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <!-- Lieu du stage -->
+    <div class="stage-lieu">
+      <div class="lieu-card">
+        <i class="fas fa-map-marker-alt"></i>
+        <div>
+          <h3>Campus des Monts du Lyonnais</h3>
+          <p>Loire (42) — Service informatique</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Présentation -->
+    <div class="stage-presentation">
+      <p>Dans le cadre de ma <strong>1ère année de BTS SIO option SISR</strong>, j'effectue mon stage au sein du service informatique du <strong>Campus des Monts du Lyonnais</strong>. Une immersion enrichissante pour découvrir le fonctionnement d'un établissement scolaire et mettre en pratique mes compétences en administration réseau et support.</p>
+    </div>
+
+   
+    <!-- Planning 7 semaines -->
+    <div class="stage-planning">
+      <h3><i class="fas fa-calendar-alt"></i> Planning des 7 semaines</h3>
+      <div class="weeks-grid">
+        <div class="week-card">
+          <div class="week-num">Semaine 1</div>
+          <div class="week-content"> </div>
+        </div>
+        <div class="week-card">
+          <div class="week-num">Semaine 2</div>
+          <div class="week-content"></div>
+        </div>
+        <div class="week-card">
+          <div class="week-num">Semaine 3</div>
+          <div class="week-content"></div>
+        </div>
+        <div class="week-card">
+          <div class="week-num">Semaine 4</div>
+          <div class="week-content"></div>
+        </div>
+        <div class="week-card">
+          <div class="week-num">Semaine 5</div>
+          <div class="week-content"></div>
+        </div>
+        <div class="week-card">
+          <div class="week-num">Semaine 6</div>
+          <div class="week-content"></div>
+        </div>
+        <div class="week-card">
+          <div class="week-num">Semaine 7</div>
+          <div class="week-content"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- SECTION VEILLE TECHNOLOGIQUE -->
   <section id="veille" class="section">
     <div class="section-header">
-      <span class="section-number">02</span>
+      <span class="section-number">03</span>
       <h2 class="section-title">Veille Technologique</h2>
       <div class="section-line"></div>
     </div>
@@ -173,7 +235,7 @@
   <!-- SECTION CERTIFICATIONS -->
   <section id="certifications" class="section">
     <div class="section-header">
-      <span class="section-number">03</span>
+      <span class="section-number">04</span>
       <h2 class="section-title">Certifications</h2>
       <div class="section-line"></div>
     </div>
@@ -183,11 +245,11 @@
         <div class="certif-glow"></div>
         <div class="certif-logo anssi-logo">
           <i class="fas fa-shield-halved"></i>
-          <span>ANSSI</span>
+          <span>RGPD</span>
         </div>
-        <h3 class="certif-title">Attestation ANSSI</h3>
-        <p class="certif-org">Agence Nationale de la Sécurité des Systèmes d'Information</p>
-        <p class="certif-desc">Formation aux bonnes pratiques de la sécurité informatique — sensibilisation aux risques cyber et aux règles d'hygiène numérique.</p>
+        <h3 class="certif-title">Atelier RGPD</h3>
+        <p class="certif-org">
+        <p class="certif-desc">Introduction du RGDP </p>
         <div class="certif-footer">
           <span class="certif-status valid"><i class="fas fa-circle-check"></i> Obtenue</span>
         </div>
@@ -213,7 +275,7 @@
   <!-- SECTION CONTACT -->
   <section id="contact" class="section">
     <div class="section-header">
-      <span class="section-number">04</span>
+      <span class="section-number">05</span>
       <h2 class="section-title">Contact</h2>
       <div class="section-line"></div>
     </div>
@@ -239,7 +301,7 @@
             <div class="contact-icon"><i class="fab fa-github"></i></div>
             <div class="contact-detail">
               <span class="contact-label">GitHub</span>
-              <span class="contact-value"><!-- Ton GitHub --></span>
+              <span class="contact-value">moussa-sio</span>
             </div>
           </div>
           <div class="contact-item">
@@ -262,11 +324,11 @@
       <form class="contact-form" id="contact-form">
         <div class="form-group">
           <label for="name">Votre nom</label>
-          <input type="text" id="name" placeholder="Le Morgo" required />
+          <input type="text" id="name" placeholder="John Doe" required />
         </div>
         <div class="form-group">
           <label for="email">Votre email</label>
-          <input type="email" id="email" placeholder="morgo@exemple.com" required />
+          <input type="email" id="email" placeholder="john@exemple.com" required />
         </div>
         <div class="form-group">
           <label for="message">Message</label>
@@ -283,7 +345,7 @@
   <!-- FOOTER -->
   <footer>
     <p>© 2025 — <span class="footer-name">Moussa Allouache</span> · BTS SIO SISR</p>
-    <p class="footer-sub">Conçu avec passion <i class="fas fa-heart"></i></p>
+    <p class="footer-sub">Stage au Campus des Monts du Lyonnais <i class="fas fa-building"></i></p>
   </footer>
 
   <script src="script.js"></script>
