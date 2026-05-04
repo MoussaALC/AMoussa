@@ -1,270 +1,286 @@
-/* ============================================
-   PORTFOLIO MOUSSA ALLOUACHE — script.js
-   Animations, interactions, canvas BG
-   ============================================ */
+// ============ AU CHARGEMENT DE LA PAGE ============
+document.addEventListener('DOMContentLoaded', function() {
 
-// ============ CANVAS PARTICULES ============
-(function initCanvas() {
-  const canvas = document.getElementById('bg-canvas');
-  const ctx = canvas.getContext('2d');
+  // ---------- NAVIGATION : BURGER MOBILE ----------
+  const burger = document.getElementById('burger');
+  const navLinks = document.querySelector('.nav-links');
 
-  let W = window.innerWidth;
-  let H = window.innerHeight;
-  canvas.width = W;
-  canvas.height = H;
-
-  const PARTICLE_COUNT = 70;
-  const particles = [];
-
-  const COLORS = [
-    'rgba(0, 229, 255,',
-    'rgba(168, 85, 247,',
-    'rgba(244, 114, 182,',
-  ];
-
-  class Particle {
-    constructor() { this.reset(); }
-
-    reset() {
-      this.x  = Math.random() * W;
-      this.y  = Math.random() * H;
-      this.r  = Math.random() * 1.8 + 0.4;
-      this.vx = (Math.random() - 0.5) * 0.35;
-      this.vy = (Math.random() - 0.5) * 0.35;
-      this.color = COLORS[Math.floor(Math.random() * COLORS.length)];
-      this.alpha = Math.random() * 0.5 + 0.1;
-    }
-
-    update() {
-      this.x += this.vx;
-      this.y += this.vy;
-      if (this.x < 0 || this.x > W || this.y < 0 || this.y > H) this.reset();
-    }
-
-    draw() {
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-      ctx.fillStyle = `${this.color}${this.alpha})`;
-      ctx.fill();
-    }
+  if (burger) {
+    burger.addEventListener('click', function() {
+      navLinks.classList.toggle('open');
+    });
   }
 
-  for (let i = 0; i < PARTICLE_COUNT; i++) {
-    particles.push(new Particle());
-  }
+  // ---------- FERMER LE MENU AU CLIC SUR UN LIEN ----------
+  const allNavLinks = document.querySelectorAll('.nav-links a');
+  allNavLinks.forEach(function(link) {
+    link.addEventListener('click', function() {
+      if (navLinks) navLinks.classList.remove('open');
+    });
+  });
 
-  function connectParticles() {
-    const MAX_DIST = 120;
-    for (let i = 0; i < particles.length; i++) {
-      for (let j = i + 1; j < particles.length; j++) {
-        const dx = particles[i].x - particles[j].x;
-        const dy = particles[i].y - particles[j].y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < MAX_DIST) {
-          const alpha = (1 - dist / MAX_DIST) * 0.12;
-          ctx.beginPath();
-          ctx.moveTo(particles[i].x, particles[i].y);
-          ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = `rgba(0, 229, 255, ${alpha})`;
-          ctx.lineWidth = 0.6;
-          ctx.stroke();
-        }
+  // ---------- NAVIGATION : ACTIVE LINK AU SCROLL ----------
+  const sections = document.querySelectorAll('section');
+  const navItems = document.querySelectorAll('.nav-link');
+
+  function updateActiveLink() {
+    let current = '';
+    const scrollPos = window.scrollY + 120;
+
+    sections.forEach(function(section) {
+      const sectionTop = section.offsetTop;
+      const sectionBottom = sectionTop + section.offsetHeight;
+
+      if (scrollPos >= sectionTop && scrollPos < sectionBottom) {
+        current = section.getAttribute('id');
       }
-    }
+    });
+
+    navItems.forEach(function(item) {
+      item.classList.remove('active');
+      const href = item.getAttribute('href').substring(1);
+      if (href === current) {
+        item.classList.add('active');
+      }
+    });
   }
 
-  function animate() {
-    ctx.clearRect(0, 0, W, H);
-    particles.forEach(p => { p.update(); p.draw(); });
-    connectParticles();
-    requestAnimationFrame(animate);
-  }
-
-  animate();
-
-  window.addEventListener('resize', () => {
-    W = window.innerWidth;
-    H = window.innerHeight;
-    canvas.width = W;
-    canvas.height = H;
-  });
-})();
-
-// ============ NAVBAR — SCROLL & BURGER ============
-const navbar  = document.getElementById('navbar');
-const burger  = document.getElementById('burger');
-const navLinks = document.querySelector('.nav-links');
-const allLinks = document.querySelectorAll('.nav-link');
-
-window.addEventListener('scroll', () => {
-  navbar.classList.toggle('scrolled', window.scrollY > 40);
+  window.addEventListener('scroll', updateActiveLink);
   updateActiveLink();
-});
 
-burger.addEventListener('click', () => {
-  navLinks.classList.toggle('open');
-});
-
-// Fermer le menu mobile au clic sur un lien
-allLinks.forEach(link => {
-  link.addEventListener('click', () => {
-    navLinks.classList.remove('open');
-  });
-});
-
-// ============ ACTIVE LINK AU SCROLL ============
-function updateActiveLink() {
-  const sections = document.querySelectorAll('section[id]');
-  let current = '';
-
-  sections.forEach(sec => {
-    const top = sec.offsetTop - 100;
-    if (window.scrollY >= top) current = sec.id;
+  // ---------- SCROLL NAVBAR : AJOUTER UNE OMBRE ----------
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 50) {
+      navbar.classList.add('scrolled');
+    } else {
+      navbar.classList.remove('scrolled');
+    }
   });
 
-  allLinks.forEach(link => {
-    link.classList.remove('active');
-    if (link.dataset.section === current) link.classList.add('active');
-  });
-}
+  // ---------- SMOOTH SCROLL POUR LES ANCRES ----------
+  document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+    anchor.addEventListener('click', function(e) {
+      const targetId = this.getAttribute('href');
+      if (targetId === '#') return;
 
-// ============ INTERSECTION OBSERVER — APPARITION CARTES ============
-const observerOptions = {
-  root: null,
-  rootMargin: '0px',
-  threshold: 0.15,
-};
+      const target = document.querySelector(targetId);
+      if (target) {
+        e.preventDefault();
+        const navHeight = document.getElementById('navbar').offsetHeight;
+        const targetPosition = target.getBoundingClientRect().top + window.scrollY - navHeight;
 
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      const el = entry.target;
-      const delay = parseInt(el.dataset.delay || 0);
-
-      setTimeout(() => {
-        el.classList.add('visible');
-
-        // Animer les barres de compétences si présentes
-        const fills = el.querySelectorAll('.skill-fill');
-        fills.forEach(fill => {
-          const target = fill.dataset.width;
-          setTimeout(() => {
-            fill.style.width = target + '%';
-          }, 200);
+        window.scrollTo({
+          top: targetPosition,
+          behavior: 'smooth'
         });
-      }, delay);
-
-      observer.unobserve(el);
-    }
+      }
+    });
   });
-}, observerOptions);
 
-// Observer tous les éléments animés
-document.querySelectorAll(
-  '.card, .veille-card, .certif-card'
-).forEach(el => observer.observe(el));
+  // ---------- ANIMATION DES BARRES DE COMPÉTENCES ----------
+  const skillBars = document.querySelectorAll('.skill-fill');
 
-// ============ FORMULAIRE CONTACT ============
-const form     = document.getElementById('contact-form');
-const feedback = document.getElementById('form-feedback');
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        const bar = entry.target;
+        const width = bar.getAttribute('data-width');
+        bar.style.width = width + '%';
+        observer.unobserve(bar);
+      }
+    });
+  }, { threshold: 0.3 });
 
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
+  skillBars.forEach(function(bar) {
+    observer.observe(bar);
+  });
 
-  const name    = document.getElementById('name').value.trim();
-  const email   = document.getElementById('email').value.trim();
-  const message = document.getElementById('message').value.trim();
+  // ---------- APPARITION DES CARTES AU SCROLL ----------
+  const cards = document.querySelectorAll('.card, .veille-card, .certif-card');
 
-  if (!name || !email || !message) {
-    showFeedback('Merci de remplir tous les champs.', 'error');
-    return;
-  }
+  const cardObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        cardObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
 
-  if (!isValidEmail(email)) {
-    showFeedback('Adresse email invalide.', 'error');
-    return;
-  }
+  cards.forEach(function(card) {
+    cardObserver.observe(card);
+  });
 
-  // Simulation envoi (remplacer par appel API réel)
-  const btn = form.querySelector('.submit-btn');
-  btn.textContent = 'Envoi en cours...';
-  btn.disabled = true;
+  // ---------- FORMULAIRE DE CONTACT ----------
+  const form = document.getElementById('contact-form');
+  const feedback = document.getElementById('form-feedback');
 
-  setTimeout(() => {
-    showFeedback(`✅ Merci ${name} ! Votre message a bien été envoyé.`, 'success');
-    form.reset();
-    btn.innerHTML = 'Envoyer <i class="fas fa-paper-plane"></i>';
-    btn.disabled = false;
-  }, 1500);
-});
-
-function showFeedback(msg, type) {
-  feedback.textContent = msg;
-  feedback.style.color = type === 'success' ? '#22c55e' : '#f87171';
-  feedback.style.opacity = '1';
-  setTimeout(() => {
-    feedback.style.opacity = '0';
-    feedback.style.transition = 'opacity 0.5s';
-  }, 4000);
-}
-
-function isValidEmail(email) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-
-// ============ SMOOTH SCROLL ANCRES ============
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function (e) {
-    const target = document.querySelector(this.getAttribute('href'));
-    if (target) {
+  if (form) {
+    form.addEventListener('submit', function(e) {
       e.preventDefault();
-      const navH = document.getElementById('navbar').offsetHeight;
-      const top  = target.getBoundingClientRect().top + window.scrollY - navH;
-      window.scrollTo({ top, behavior: 'smooth' });
+
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const message = document.getElementById('message').value.trim();
+
+      if (!name || !email || !message) {
+        showFeedback('Merci de remplir tous les champs.', 'error');
+        return;
+      }
+
+      if (!isValidEmail(email)) {
+        showFeedback('Adresse email invalide.', 'error');
+        return;
+      }
+
+      const btn = form.querySelector('.submit-btn');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = 'Envoi...';
+      btn.disabled = true;
+
+      // Simulation d'envoi (pas de vrai backend ici)
+      setTimeout(function() {
+        showFeedback('✅ Message envoyé ! Je vous répondrai rapidement.', 'success');
+        form.reset();
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+      }, 1000);
+    });
+  }
+
+  function showFeedback(msg, type) {
+    feedback.textContent = msg;
+    feedback.style.color = type === 'success' ? '#5a8f6c' : '#d9534f';
+    setTimeout(function() {
+      feedback.textContent = '';
+    }, 4000);
+  }
+
+  function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
+  // ---------- GESTION DES 7 SEMAINES DE STAGE (LOCALSTORAGE) ----------
+  const weeksContainer = document.getElementById('weeks-container');
+
+  if (weeksContainer) {
+    // Contenu par défaut pour les 7 semaines
+    const defaultWeeks = [
+      "Découverte du service informatique, prise en main du parc et des équipements.",
+      "Assistance utilisateurs : résolution de tickets (imprimantes, réseau, logiciels).",
+      "Installation et configuration de postes (Windows/Linux).",
+      "Inventaire du réseau : adressage IP, switchs, points d'accès.",
+      "Mise en place de sauvegardes et vérification des procédures.",
+      "Gestion des comptes utilisateurs et droits d'accès.",
+      "Bilan du stage, rédaction du rapport, préparation soutenance."
+    ];
+
+    // Charger ou initialiser les données
+    let savedWeeks = localStorage.getItem('stage_weeks');
+    let weeksData = savedWeeks ? JSON.parse(savedWeeks) : [...defaultWeeks];
+
+    // Sauvegarder dans localStorage
+    function saveWeeks() {
+      localStorage.setItem('stage_weeks', JSON.stringify(weeksData));
     }
-  });
-});
 
-// ============ CURSOR GLOW EFFECT ============
-(function initCursorGlow() {
-  const glow = document.createElement('div');
-  glow.style.cssText = `
-    position: fixed;
-    width: 300px; height: 300px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(0,229,255,0.04), transparent 70%);
-    pointer-events: none;
-    z-index: 0;
-    transform: translate(-50%, -50%);
-    transition: left 0.12s ease, top 0.12s ease;
-  `;
-  document.body.appendChild(glow);
+    // Afficher les 7 cartes
+    function renderWeeks() {
+      weeksContainer.innerHTML = '';
 
-  window.addEventListener('mousemove', (e) => {
-    glow.style.left = e.clientX + 'px';
-    glow.style.top  = e.clientY + 'px';
-  });
-})();
+      for (let i = 0; i < weeksData.length; i++) {
+        const weekNum = i + 1;
+        const card = document.createElement('div');
+        card.className = 'week-card';
 
-// ============ TYPING EFFECT HERO TAG ============
-(function typingEffect() {
-  const tag = document.querySelector('.hero-tag');
-  if (!tag) return;
+        card.innerHTML = `
+          <div class="week-num">Semaine ${weekNum}</div>
+          <div class="week-content" data-week="${i}">${escapeHtml(weeksData[i])}</div>
+          <button class="edit-week-btn" data-week="${i}" style="margin-top: 0.8rem; background: none; border: 1px solid var(--gris-clair); padding: 0.2rem 0.6rem; border-radius: 6px; font-size: 0.7rem; cursor: pointer;">✏️ Modifier</button>
+          <button class="save-week-btn" data-week="${i}" style="margin-top: 0.8rem; margin-left: 0.5rem; background: var(--bleu-doux); color: white; border: none; padding: 0.2rem 0.6rem; border-radius: 6px; font-size: 0.7rem; cursor: pointer;">💾 Sauvegarder</button>
+        `;
 
-  const text = tag.textContent;
-  tag.textContent = '';
-  tag.style.opacity = '1';
-  tag.style.animation = 'none';
+        weeksContainer.appendChild(card);
+      }
 
-  let i = 0;
-  const interval = setInterval(() => {
-    tag.textContent += text[i];
-    i++;
-    if (i >= text.length) clearInterval(interval);
-  }, 55);
-})();
+      // Ajouter les événements
+      document.querySelectorAll('.edit-week-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const weekIndex = this.dataset.week;
+          const contentDiv = document.querySelector(`.week-content[data-week="${weekIndex}"]`);
+          const currentText = contentDiv.innerText;
 
-// ============ INIT AU CHARGEMENT ============
-window.addEventListener('DOMContentLoaded', () => {
-  updateActiveLink();
+          const textarea = document.createElement('textarea');
+          textarea.value = currentText;
+          textarea.style.width = '100%';
+          textarea.style.padding = '0.4rem';
+          textarea.style.marginTop = '0.5rem';
+          textarea.style.border = '1px solid var(--gris-clair)';
+          textarea.style.borderRadius = '8px';
+          textarea.rows = 3;
+
+          contentDiv.innerHTML = '';
+          contentDiv.appendChild(textarea);
+          textarea.focus();
+
+          // Remplacer le bouton modifier par annuler temporairement
+          btn.textContent = '❌ Annuler';
+          btn.onclick = () => {
+            contentDiv.innerHTML = escapeHtml(currentText);
+            btn.textContent = '✏️ Modifier';
+            btn.onclick = arguments.callee;
+          };
+        });
+      });
+
+      document.querySelectorAll('.save-week-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const weekIndex = this.dataset.week;
+          const contentDiv = document.querySelector(`.week-content[data-week="${weekIndex}"]`);
+          const textarea = contentDiv.querySelector('textarea');
+
+          if (textarea) {
+            const newText = textarea.value;
+            weeksData[weekIndex] = newText;
+            contentDiv.innerHTML = escapeHtml(newText);
+            saveWeeks();
+
+            // Remettre le bouton modifier à l'état normal
+            const editBtn = document.querySelector(`.edit-week-btn[data-week="${weekIndex}"]`);
+            if (editBtn) {
+              editBtn.textContent = '✏️ Modifier';
+            }
+
+            // Petit message visuel
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '✅ Sauvegardé !';
+            setTimeout(() => {
+              btn.innerHTML = originalText;
+            }, 1500);
+          } else {
+            // Si pas de textarea, on sauvegarde le texte actuel
+            weeksData[weekIndex] = contentDiv.innerText;
+            saveWeeks();
+            btn.innerHTML = '✅ Sauvegardé !';
+            setTimeout(() => {
+              btn.innerHTML = '💾 Sauvegarder';
+            }, 1500);
+          }
+        });
+      });
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/[&<>]/g, function(m) {
+        if (m === '&') return '&amp;';
+        if (m === '<') return '&lt;';
+        if (m === '>') return '&gt;';
+        return m;
+      });
+    }
+
+    renderWeeks();
+  }
+
 });
