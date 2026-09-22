@@ -165,111 +165,6 @@ document.addEventListener('DOMContentLoaded', function() {
   const weeksContainer = document.getElementById('weeks-container');
 
   if (weeksContainer) {
-    // Contenu par défaut pour les 7 semaines
-    const defaultWeeks = [
-      "Découverte du service informatique, prise en main du parc et des équipements.",
-      "Assistance utilisateurs : résolution de tickets (imprimantes, réseau, logiciels).",
-      "Installation et configuration de postes (Windows/Linux).",
-      "Inventaire du réseau : adressage IP, switchs, points d'accès.",
-      "Mise en place de sauvegardes et vérification des procédures.",
-      "Gestion des comptes utilisateurs et droits d'accès.",
-      "Bilan du stage, rédaction du rapport, préparation soutenance."
-    ];
-
-    // Charger ou initialiser les données
-    let savedWeeks = localStorage.getItem('stage_weeks');
-    let weeksData = savedWeeks ? JSON.parse(savedWeeks) : [...defaultWeeks];
-
-    // Sauvegarder dans localStorage
-    function saveWeeks() {
-      localStorage.setItem('stage_weeks', JSON.stringify(weeksData));
-    }
-
-    // Afficher les 7 cartes
-    function renderWeeks() {
-      weeksContainer.innerHTML = '';
-
-      for (let i = 0; i < weeksData.length; i++) {
-        const weekNum = i + 1;
-        const card = document.createElement('div');
-        card.className = 'week-card';
-
-        card.innerHTML = `
-          <div class="week-num">Semaine ${weekNum}</div>
-          <div class="week-content" data-week="${i}">${escapeHtml(weeksData[i])}</div>
-          <button class="edit-week-btn" data-week="${i}" style="margin-top: 0.8rem; background: none; border: 1px solid var(--gris-clair); padding: 0.2rem 0.6rem; border-radius: 6px; font-size: 0.7rem; cursor: pointer;">✏️ Modifier</button>
-          <button class="save-week-btn" data-week="${i}" style="margin-top: 0.8rem; margin-left: 0.5rem; background: var(--bleu-doux); color: white; border: none; padding: 0.2rem 0.6rem; border-radius: 6px; font-size: 0.7rem; cursor: pointer;">💾 Sauvegarder</button>
-        `;
-
-        weeksContainer.appendChild(card);
-      }
-
-      // Ajouter les événements
-      document.querySelectorAll('.edit-week-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-          const weekIndex = this.dataset.week;
-          const contentDiv = document.querySelector(`.week-content[data-week="${weekIndex}"]`);
-          const currentText = contentDiv.innerText;
-
-          const textarea = document.createElement('textarea');
-          textarea.value = currentText;
-          textarea.style.width = '100%';
-          textarea.style.padding = '0.4rem';
-          textarea.style.marginTop = '0.5rem';
-          textarea.style.border = '1px solid var(--gris-clair)';
-          textarea.style.borderRadius = '8px';
-          textarea.rows = 3;
-
-          contentDiv.innerHTML = '';
-          contentDiv.appendChild(textarea);
-          textarea.focus();
-
-          // Remplacer le bouton modifier par annuler temporairement
-          btn.textContent = '❌ Annuler';
-          btn.onclick = () => {
-            contentDiv.innerHTML = escapeHtml(currentText);
-            btn.textContent = '✏️ Modifier';
-            btn.onclick = arguments.callee;
-          };
-        });
-      });
-
-      document.querySelectorAll('.save-week-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-          const weekIndex = this.dataset.week;
-          const contentDiv = document.querySelector(`.week-content[data-week="${weekIndex}"]`);
-          const textarea = contentDiv.querySelector('textarea');
-
-          if (textarea) {
-            const newText = textarea.value;
-            weeksData[weekIndex] = newText;
-            contentDiv.innerHTML = escapeHtml(newText);
-            saveWeeks();
-
-            // Remettre le bouton modifier à l'état normal
-            const editBtn = document.querySelector(`.edit-week-btn[data-week="${weekIndex}"]`);
-            if (editBtn) {
-              editBtn.textContent = '✏️ Modifier';
-            }
-
-            // Petit message visuel
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '✅ Sauvegardé !';
-            setTimeout(() => {
-              btn.innerHTML = originalText;
-            }, 1500);
-          } else {
-            // Si pas de textarea, on sauvegarde le texte actuel
-            weeksData[weekIndex] = contentDiv.innerText;
-            saveWeeks();
-            btn.innerHTML = '✅ Sauvegardé !';
-            setTimeout(() => {
-              btn.innerHTML = '💾 Sauvegarder';
-            }, 1500);
-          }
-        });
-      });
-    }
 
     function escapeHtml(str) {
       return str.replace(/[&<>]/g, function(m) {
@@ -280,7 +175,95 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     }
 
-    renderWeeks();
+    // Si l'utilisateur a déjà sauvegardé des modifications, on les applique
+    // par-dessus le contenu déjà écrit dans index.html (on n'écrase rien d'autre)
+    const savedWeeks = localStorage.getItem('stage_weeks');
+    if (savedWeeks) {
+      try {
+        const weeksData = JSON.parse(savedWeeks);
+        document.querySelectorAll('.week-content').forEach(function(contentDiv) {
+          const idx = contentDiv.dataset.week;
+          if (weeksData[idx] !== undefined) {
+            contentDiv.innerHTML = escapeHtml(weeksData[idx]);
+          }
+        });
+      } catch (e) {
+        // Données locales corrompues : on ignore et on garde le contenu du HTML
+      }
+    }
+
+    // Sauvegarder l'état actuel de toutes les semaines dans localStorage
+    function saveAllWeeks() {
+      const weeksData = {};
+      document.querySelectorAll('.week-content').forEach(function(contentDiv) {
+        weeksData[contentDiv.dataset.week] = contentDiv.innerText;
+      });
+      localStorage.setItem('stage_weeks', JSON.stringify(weeksData));
+    }
+
+    // Activer les boutons Modifier/Sauvegarder déjà présents dans le HTML
+    document.querySelectorAll('.edit-week-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const weekIndex = this.dataset.week;
+        const contentDiv = document.querySelector(`.week-content[data-week="${weekIndex}"]`);
+        const currentText = contentDiv.innerText;
+
+        const textarea = document.createElement('textarea');
+        textarea.value = currentText;
+        textarea.style.width = '100%';
+        textarea.style.padding = '0.4rem';
+        textarea.style.marginTop = '0.5rem';
+        textarea.style.border = '1px solid var(--gris-clair)';
+        textarea.style.borderRadius = '8px';
+        textarea.rows = 3;
+
+        contentDiv.innerHTML = '';
+        contentDiv.appendChild(textarea);
+        textarea.focus();
+
+        // Remplacer le bouton modifier par annuler temporairement
+        btn.textContent = '❌ Annuler';
+        btn.onclick = () => {
+          contentDiv.innerHTML = escapeHtml(currentText);
+          btn.textContent = '✏️ Modifier';
+          btn.onclick = arguments.callee;
+        };
+      });
+    });
+
+    document.querySelectorAll('.save-week-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const weekIndex = this.dataset.week;
+        const contentDiv = document.querySelector(`.week-content[data-week="${weekIndex}"]`);
+        const textarea = contentDiv.querySelector('textarea');
+
+        if (textarea) {
+          const newText = textarea.value;
+          contentDiv.innerHTML = escapeHtml(newText);
+          saveAllWeeks();
+
+          // Remettre le bouton modifier à l'état normal
+          const editBtn = document.querySelector(`.edit-week-btn[data-week="${weekIndex}"]`);
+          if (editBtn) {
+            editBtn.textContent = '✏️ Modifier';
+          }
+
+          // Petit message visuel
+          const originalText = btn.innerHTML;
+          btn.innerHTML = '✅ Sauvegardé !';
+          setTimeout(() => {
+            btn.innerHTML = originalText;
+          }, 1500);
+        } else {
+          // Si pas de textarea, on sauvegarde le texte actuel
+          saveAllWeeks();
+          btn.innerHTML = '✅ Sauvegardé !';
+          setTimeout(() => {
+            btn.innerHTML = '💾 Sauvegarder';
+          }, 1500);
+        }
+      });
+    });
   }
 
 });
